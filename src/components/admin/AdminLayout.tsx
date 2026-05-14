@@ -18,9 +18,12 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen flex bg-gray-50">
 
-      {/* SIDEBAR */}
-      <aside className="w-64 bg-white border-r p-5">
-        <h1 className="text-xl font-bold mb-8">Admin Panel</h1>
+      {/* SIDEBAR (DESKTOP ONLY) */}
+      <aside className="hidden md:block w-64 bg-white border-r p-5">
+
+        <h1 className="text-xl font-bold mb-8">
+          Admin Panel
+        </h1>
 
         <nav className="flex flex-col gap-2">
 
@@ -53,7 +56,10 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       </aside>
 
       {/* MAIN */}
-      <main className="flex-1 p-6">{children}</main>
+      <main className="flex-1 p-4 md:p-6 w-full">
+        {children}
+      </main>
+
     </div>
   );
 }

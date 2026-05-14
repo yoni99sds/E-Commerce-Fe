@@ -6,6 +6,12 @@ import {
   LayoutDashboard,
   Menu,
   X,
+  ClipboardList,
+  Package,
+  Tags,
+  ShoppingCart,
+  TicketPercent,
+  Home,
 } from "lucide-react";
 
 import { useCart } from "../context/CartContext";
@@ -17,12 +23,14 @@ import { Link, useNavigate } from "react-router-dom";
 export function Navbar({ onCartOpen }: { onCartOpen: () => void }) {
   const { totalItems } = useCart();
   const { user, logout, isAdmin } = useAuth();
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
-    navigate("/"); // force home redirect
+    navigate("/");
   };
 
   return (
@@ -38,45 +46,17 @@ export function Navbar({ onCartOpen }: { onCartOpen: () => void }) {
           MODERN<span className="text-muted-foreground">SHOP</span>
         </Link>
 
-        {/* DESKTOP NAV */}
-        <div className="hidden md:flex items-center gap-6">
-
-          <Link to="/" className="text-sm font-medium hover:text-primary">
-            Home
-          </Link>
-
-          {/* 👇 ONLY USERS SEE ORDERS */}
-          {user && !isAdmin && (
-            <Link
-              to="/my-orders"
-              className="text-sm font-medium hover:text-primary"
-            >
-              My Orders
-            </Link>
-          )}
-
-        </div>
-
         {/* RIGHT SIDE */}
-        <div className="flex items-center gap-2 md:gap-4">
+        <div className="flex items-center gap-3">
 
-          <button className="p-2 hover:bg-accent rounded-full hidden md:block">
+          {/* SEARCH */}
+          <button className="hidden md:block p-2 hover:bg-accent rounded-full">
             <Search className="w-5 h-5" />
           </button>
 
           {/* USER */}
           {user ? (
-            <div className="flex items-center gap-3">
-
-              {/* ADMIN ONLY */}
-              {isAdmin && (
-                <Link to="/admin">
-                  <Button variant="ghost" size="sm" className="gap-2">
-                    <LayoutDashboard className="w-4 h-4" />
-                    Admin
-                  </Button>
-                </Link>
-              )}
+            <div className="flex items-center gap-2">
 
               <div className="hidden md:flex items-center gap-2 text-sm font-medium">
                 <UserIcon className="w-4 h-4" />
@@ -114,7 +94,7 @@ export function Navbar({ onCartOpen }: { onCartOpen: () => void }) {
             )}
           </button>
 
-          {/* MOBILE */}
+          {/* MOBILE MENU BUTTON */}
           <button
             className="md:hidden p-2"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -125,24 +105,82 @@ export function Navbar({ onCartOpen }: { onCartOpen: () => void }) {
         </div>
       </div>
 
-      {/* MOBILE MENU */}
+      {/* ================= MOBILE MENU ================= */}
       {isMenuOpen && (
-        <div className="md:hidden p-4 space-y-4">
+        <div className="md:hidden p-4 space-y-2 border-t bg-white">
 
-          <Link to="/" onClick={() => setIsMenuOpen(false)}>
+          {/* HOME */}
+          <Link
+            to="/"
+            className="flex items-center gap-3 py-2"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            <Home size={16} />
             Home
           </Link>
 
+          {/* USER ORDERS */}
           {user && !isAdmin && (
-            <Link to="/my-orders" onClick={() => setIsMenuOpen(false)}>
+            <Link
+              to="/my-orders"
+              className="flex items-center gap-3 py-2"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <ClipboardList size={16} />
               My Orders
             </Link>
           )}
 
+          {/* ADMIN SECTION */}
           {isAdmin && (
-            <Link to="/admin" onClick={() => setIsMenuOpen(false)}>
-              Admin Dashboard
-            </Link>
+            <>
+              <p className="text-xs text-gray-400 mt-2">ADMIN</p>
+
+              <Link
+                to="/admin"
+                className="flex items-center gap-3 py-2"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <LayoutDashboard size={16} />
+                Dashboard
+              </Link>
+
+              <Link
+                to="/admin/products"
+                className="flex items-center gap-3 py-2"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <Package size={16} />
+                Products
+              </Link>
+
+              <Link
+                to="/admin/categories"
+                className="flex items-center gap-3 py-2"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <Tags size={16} />
+                Categories
+              </Link>
+
+              <Link
+                to="/admin/orders"
+                className="flex items-center gap-3 py-2"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <ShoppingCart size={16} />
+                Orders
+              </Link>
+
+              <Link
+                to="/admin/promos"
+                className="flex items-center gap-3 py-2"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <TicketPercent size={16} />
+                Promo Codes
+              </Link>
+            </>
           )}
 
         </div>
