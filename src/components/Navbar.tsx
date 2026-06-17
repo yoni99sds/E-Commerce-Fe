@@ -19,6 +19,7 @@ import { useAuth } from "../context/AuthContext";
 import { Button } from "./ui/button";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import logo from "../assets/favicon.png";
 
 export function Navbar({ onCartOpen }: { onCartOpen: () => void }) {
   const { totalItems } = useCart();
@@ -35,15 +36,15 @@ export function Navbar({ onCartOpen }: { onCartOpen: () => void }) {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b">
-
       <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
 
         {/* LOGO */}
-        <Link
-          to="/"
-          className="text-2xl font-bold tracking-tighter text-primary"
-        >
-          MODERN<span className="text-muted-foreground">SHOP</span>
+        <Link to="/">
+          <img
+            src={logo}
+            alt="Logo"
+            className="h-14 w-auto object-contain"
+          />
         </Link>
 
         {/* RIGHT SIDE */}
@@ -58,11 +59,23 @@ export function Navbar({ onCartOpen }: { onCartOpen: () => void }) {
           {user ? (
             <div className="flex items-center gap-2">
 
+              {/* DESKTOP USER NAME */}
               <div className="hidden md:flex items-center gap-2 text-sm font-medium">
                 <UserIcon className="w-4 h-4" />
-                {user.name}
+
+                {isAdmin ? (
+                  <Link
+                    to="/admin"
+                    className="hover:text-primary transition"
+                  >
+                    {user.name}
+                  </Link>
+                ) : (
+                  <span>{user.name}</span>
+                )}
               </div>
 
+              {/* LOGOUT */}
               <Button
                 variant="ghost"
                 size="icon"
@@ -185,7 +198,6 @@ export function Navbar({ onCartOpen }: { onCartOpen: () => void }) {
 
         </div>
       )}
-
     </nav>
   );
 }
